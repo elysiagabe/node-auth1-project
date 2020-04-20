@@ -16,6 +16,7 @@ server.use(cors());
 
 server.use('/api/users', userRouter); // can apply authenticator middleware here
 // apply authRouter here! QUESTION: WHAT SHOULD THE ROUTE BE? For example, just /api? Or /api/auth (this is what we did in the guided project BUT the endpoints we want to build are /api/register & /api/login)
+server.use('/api', authRouter);
 
 server.get('/', (req, res) => {
     res.json({ api: 'It\'s working!' })
