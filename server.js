@@ -1,21 +1,31 @@
 const express = require('express');
 const cors = require('cors');
-// import express-session here
+const session = require('express-session');
 
 const userRouter = require('./users/user-router');
 const authRouter = require('./auth/auth-router');
-// probably import authenticator here
+const authenticator = require('./auth/authenticator');
 
 const server = express();
 
-// define sessionConfig object here
+// sessionConfig object: 
+const sessionConfig = {
+    name: 'auth',
+    secret: process.env.SESSION_SECRET || 'this is a secret',
+    resave: false,
+    saveUninitialized: process.env.SEND_COOKIES || true,
+    cookie: {
+        maxAge: 1000 * 30,
+        secure: process.env.USE_SECURE_COOKIES || false,
+        httpOnly: true,
+    },
+}
 
 server.use(express.json());
 server.use(cors());
-// use session(sessionConfig) here
+server.use(session(sessionConfig));
 
-server.use('/api/users', userRouter); // can apply authenticator middleware here
-// apply authRouter here! QUESTION: WHAT SHOULD THE ROUTE BE? For example, just /api? Or /api/auth (this is what we did in the guided project BUT the endpoints we want to build are /api/register & /api/login)
+server.use('/api/users', authenticator, userRouter); // can apply authenticator middleware here
 server.use('/api', authRouter);
 
 server.get('/', (req, res) => {
