@@ -1,9 +1,66 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const LoginForm = () => {
+const LoginForm = props => {
+    const [credentials, setCredentials] = useState({
+        username: '',
+        password: ''
+    })
+
+    const [loginError, setLoginError] = useState('');
+
+    const handleChanges = e => {
+        setCredentials({
+            ...credentials,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    console.log({loginError})
+
+    //login user
+    const login = e => {
+        e.preventDefault();
+        axios.post('http://localhost:5000/api/login', credentials)
+        .then(res => {
+            console.log('Successful login', res)
+            props.history.push('/users')
+        })
+        .catch(err => {
+            console.log('Error logging user in:', err)
+            setLoginError(err)
+        })
+    }
+
+    //handle submit
+
     return (
         <div>
-            I'm a login form
+            <h2>Welcome back!</h2>
+            <form onSubmit={login}>
+                <label htmlFor="username">Username</label>
+                <input 
+                    type="string"
+                    name="username"
+                    id="username"
+                    value={credentials.username}
+                    onChange={handleChanges}
+                />
+
+                <label htmlFor="password">Password</label>
+                <input 
+                    type="string"
+                    name="password"
+                    id="password"
+                    value={credentials.password}
+                    onChange={handleChanges}
+                />
+
+                <button type="submit">Login</button>
+            </form>
+
+            {(loginError) ? <p>Oops! Incorrect login. Try again or <Link to="/">create a new account</Link></p> : null}
         </div>
     )
 }
