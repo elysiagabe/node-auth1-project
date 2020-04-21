@@ -15,7 +15,9 @@ router.post('/register', (req, res) => {
             res.status(201).json(newAcct)
         })
         .catch(err => {
-            res.status(500).json({ errorMessage: err.message })
+            res.status(500).json({ 
+                errorMessage: "Can't create account"
+            })
         })
 })
 
