@@ -15,14 +15,17 @@ const sessionConfig = {
     resave: false,
     saveUninitialized: process.env.SEND_COOKIES || true,
     cookie: {
-        maxAge: 1000 * 30,
+        maxAge: 1000 * 60 * 10,
         secure: process.env.USE_SECURE_COOKIES || false,
         httpOnly: true,
     },
 }
 
 server.use(express.json());
-server.use(cors());
+server.use(cors({
+    credentials: true, 
+    origin: "http://localhost:3000"
+}));
 server.use(session(sessionConfig));
 
 server.use('/api/users', authenticator, userRouter); // can apply authenticator middleware here

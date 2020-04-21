@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import axiosWithCredentials from '../utils/axiosWithCredentials';
 
 const SignupForm = (props) => {
     const [newAcct, setNewAcct] = useState({
@@ -21,7 +22,7 @@ const SignupForm = (props) => {
     }
 
     const createAccount = account => {
-        axios.post('http://localhost:5000/api/register', account)
+        axiosWithCredentials.post('http://localhost:5000/api/register', account)
         .then(res => {
             console.log('new account created', res)
         })

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import axiosWithCredentials from '../utils/axiosWithCredentials';
 
 const LoginForm = props => {
     const [credentials, setCredentials] = useState({
@@ -22,10 +23,11 @@ const LoginForm = props => {
     //login user
     const login = e => {
         e.preventDefault();
-        axios.post('http://localhost:5000/api/login', credentials)
+        axiosWithCredentials.post('http://localhost:5000/api/login', credentials)
         .then(res => {
             console.log('Successful login', res)
             props.history.push('/users')
+            // res.config.withCredentials = true;
         })
         .catch(err => {
             console.log('Error logging user in:', err)

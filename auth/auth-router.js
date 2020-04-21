@@ -30,6 +30,7 @@ router.post('/login', (req, res) => {
             if (foundUser && bcrypt.compareSync(password, foundUser[0].password)) {
                 req.session.loggedIn = true;
                 res.status(200).json({ message: `Welcome back!`})
+                console.log(req.session)
             } else {
                 res.status(401).json({ message: "Account not found. You shall not pass!" })
             }
